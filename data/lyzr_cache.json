@@ -1,0 +1,806 @@
+{
+ "07916f314c7cdab4fe1d57cb": {
+  "summary": "Approved both SELLs (ETERNAL.NS, M&M.NS) at full quantity as they reduce risk. For BUYs, approved LT.NS and TITAN.NS in full, but sharply cut BAJFINANCE.NS and SBIN.NS due to the R1 single-stock and R2 sector weight limits; vetoed MARUTI.NS as the request breaches the R1 limit entirely.",
+  "verdicts": [
+   {
+    "approved_qty": 443,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Entire SELL order for 443 shares reduces ETERNAL.NS from 14.6% to 0%, reducing single-stock risk as allowed by R1.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "ETERNAL.NS"
+   },
+   {
+    "approved_qty": 20,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Selling 20 shares of M&M.NS brings its weight to 0%, reducing risk and staying within all limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "M&M.NS"
+   },
+   {
+    "approved_qty": 3,
+    "decision": "MODIFY",
+    "reason": "MODIFY: Requested 52 shares puts BAJFINANCE.NS at 20.1% of NAV, but R1 allows only up to 3 shares for a 14.9% weight.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "BAJFINANCE.NS"
+   },
+   {
+    "approved_qty": 13,
+    "decision": "APPROVE",
+    "reason": "APPROVE: 13 shares brings LT.NS to 8.5% of NAV, inside all policy limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "LT.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: Requested 12 shares would breach R1, as MARUTI.NS is already at 14.2% and no new shares are allowed.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "MARUTI.NS"
+   },
+   {
+    "approved_qty": 157,
+    "decision": "MODIFY",
+    "reason": "MODIFY: Requested 372 shares would lift SBIN.NS sector over 35% of NAV; R1 and R2 together only allow 157 shares (15% of NAV single-stock cap, Financials sector at 29.9% after this buy).",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "SBIN.NS"
+   },
+   {
+    "approved_qty": 4,
+    "decision": "APPROVE",
+    "reason": "APPROVE: 4 shares keeps TITAN.NS at 1.5% of NAV, compliant with all rules.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "TITAN.NS"
+   }
+  ]
+ },
+ "19770a236d1b8ee4afd5dfa4": {
+  "summary": "All three SELL orders\u2014SBIN.NS, SUNPHARMA.NS, and TITAN.NS\u2014are approved as they reduce risk. Among the BUYs, LT.NS is approved at the requested qty as it passes all limits. ADANIENT.NS is resized to the max allowed by R1/R2, and ONGC.NS is vetoed due to R1 preventing any new buys in this name.",
+  "verdicts": [
+   {
+    "approved_qty": 157,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Fully closing SBIN.NS position, which reduces risk, and there are no binding limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "SBIN.NS"
+   },
+   {
+    "approved_qty": 15,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Trimming exposure from 15.2% to 12.3% of NAV reduces risk and stays inside all limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "SUNPHARMA.NS"
+   },
+   {
+    "approved_qty": 7,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Trimming TITAN.NS from 15.2% to 12.0% of NAV is inside the 15% R1 single stock limit.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "TITAN.NS"
+   },
+   {
+    "approved_qty": 56,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 148 shares would make ADANIENT.NS 39% of NAV violating R1 (single stock 15%) and R2 (sector 35%); maximum allowed is 56 shares (14.8% of NAV) by R1.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "ADANIENT.NS"
+   },
+   {
+    "approved_qty": 12,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Buying 12 shares of LT.NS brings it to 5.2% of NAV, within all position, sector, and volatility limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "LT.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: ONGC.NS is already at 15.6% of NAV and R1 caps a single stock at 15%. No further buying allowed.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "ONGC.NS"
+   }
+  ]
+ },
+ "1d5547e3a641cb0473511099": {
+  "summary": "All SELL orders for BAJFINANCE.NS, LT.NS, MARUTI.NS, and TITAN.NS are approved as they decrease risk and are fully allowed. The M&M.NS BUY is cut to 39 shares due to R1 and R2 position and sector caps; the RELIANCE.NS BUY is approved in full. The SBIN.NS BUY is vetoed as both stock and sector position limits are already reached.",
+  "verdicts": [
+   {
+    "approved_qty": 141,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELL order always reduces risk and all policy limits are met.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "BAJFINANCE.NS"
+   },
+   {
+    "approved_qty": 12,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELL order reduces risk and remains within all limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "LT.NS"
+   },
+   {
+    "approved_qty": 6,
+    "decision": "APPROVE",
+    "reason": "APPROVE: This SELL decreases the position well within all risk policies.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "MARUTI.NS"
+   },
+   {
+    "approved_qty": 4,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Selling out the small TITAN.NS stake is fully allowed under all rules.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "TITAN.NS"
+   },
+   {
+    "approved_qty": 39,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 91 shares would breach R1 (stock weight hits 34%) and R2 (sector 39%); R1 limits to 39 shares, keeping M&M.NS at 14.6% and Auto sector at 23.1% of NAV.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "M&M.NS"
+   },
+   {
+    "approved_qty": 88,
+    "decision": "APPROVE",
+    "reason": "APPROVE: 88 shares keeps RELIANCE.NS and Energy sector below all risk limits, at 13.9% of NAV.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "RELIANCE.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: R1 and R2 prevent any new shares\u2014Financials are at 29.7% of NAV, and SBIN.NS at 15.2%, both at their allowed maximums.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "SBIN.NS"
+   }
+  ]
+ },
+ "1f70102bc533431c049694e3": {
+  "summary": "Approved all three SELL orders as they reduce portfolio risk and have no binding constraints. Vetoed the ADANIENT.NS BUY as R2 and R3 severely restrict it (allowed: 0 shares, sector and volatility rules), and resized SUNPHARMA.NS BUY to 14 shares due to R1 position limit.",
+  "verdicts": [
+   {
+    "approved_qty": 12,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELL reduces risk and current 5.1% position exits fully, no rules breached.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "LT.NS"
+   },
+   {
+    "approved_qty": 522,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELL reduces risk and current 14.1% position exits fully, no limits breached.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "ONGC.NS"
+   },
+   {
+    "approved_qty": 26,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELL reduces risk and current 11.1% position exits fully, within all desk rules.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "TITAN.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: Only 0 shares allowed as Industrials would reach 80.7% of NAV (R2 caps at 35%) and high volatility (45%) restricts position to 7.5% by R3.",
+    "rules": [
+     "R2",
+     "R3"
+    ],
+    "side": "BUY",
+    "ticker": "ADANIENT.NS"
+   },
+   {
+    "approved_qty": 14,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 37 shares would make SUNPHARMA 19.2% of NAV; R1 caps at 15%, so only 14 shares (14.9%).",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "SUNPHARMA.NS"
+   }
+  ]
+ },
+ "54ec05da7ceb3e102a4db703": {
+  "summary": "Approved both SELLs for HCLTECH.NS and INFY.NS as they reduce risk. All BUY requests (ONGC.NS, SBIN.NS, and TITAN.NS) were cut due to position and sector limits (R1, R2).",
+  "verdicts": [
+   {
+    "approved_qty": 89,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Selling 89 shares reduces risk and breaks no rule.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "HCLTECH.NS"
+   },
+   {
+    "approved_qty": 92,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Selling 92 shares reduces risk and breaks no rule.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "INFY.NS"
+   },
+   {
+    "approved_qty": 381,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 1104 shares would take ONGC.NS to 35.7% of NAV, breaching the 15% single stock (R1) and 35% sector (R2) caps; allowing 381 shares to reach 15% per R1.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "ONGC.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: Financials would reach 46.3% and SBIN.NS would remain over the 15% stock (R1) and 35% sector (R2) limits; no shares can be bought.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "SBIN.NS"
+   },
+   {
+    "approved_qty": 4,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 10 shares would make TITAN.NS 17.5% of NAV, breaching the 15% cap (R1); allowing 4 shares to reach 14.9%.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "TITAN.NS"
+   }
+  ]
+ },
+ "5c91877c4aa630b7b7563ce4": {
+  "summary": "Approved the full SELL of SUNPHARMA.NS, reducing Healthcare weight safely. Vetoed all new ADANIENT.NS buys due to single stock limits (R1), but approved BAJFINANCE.NS, ETERNAL.NS, and TITAN.NS buys in full as all rules allowed. Limited TRENT.NS to 43 shares to stay under the 15% single-stock NAV cap (R1).",
+  "verdicts": [
+   {
+    "approved_qty": 78,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Full sell allowed; exiting position brings Healthcare weight below policy limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "SUNPHARMA.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: ADANIENT.NS already at 18.4% of NAV and R1 caps single stock at 15%; no new shares permitted.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "ADANIENT.NS"
+   },
+   {
+    "approved_qty": 62,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Buy lands BAJFINANCE.NS at 6.6% of NAV, well within all risk limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "BAJFINANCE.NS"
+   },
+   {
+    "approved_qty": 213,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Buy lands ETERNAL.NS at 6.2% of NAV, inside every policy limit.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "ETERNAL.NS"
+   },
+   {
+    "approved_qty": 5,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Buy keeps TITAN.NS at only 2.3% of NAV, all rules satisfied.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "TITAN.NS"
+   },
+   {
+    "approved_qty": 43,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 54 shares would make TRENT.NS 18.5% of NAV; R1 caps a stock at 15%, so max 43 shares allowed.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "TRENT.NS"
+   }
+  ]
+ },
+ "62704e571f8ba4b528e1603a": {
+  "summary": "Approved fully selling TRENT.NS, and full buys in ICICIBANK.NS and TITAN.NS as all stay inside limits. Cut BAJFINANCE.NS and ETERNAL.NS to 63 and 251 shares and vetoed ADANIENT.NS: size limits on single stocks (R1).",
+  "verdicts": [
+   {
+    "approved_qty": 43,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Sells the full holding, lowering concentration and risk.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "TRENT.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: Already at 17.9% of NAV, single stock cap is 15% (R1); no new shares allowed.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "ADANIENT.NS"
+   },
+   {
+    "approved_qty": 63,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 178 shares would make it 28.8% of NAV; R1 caps one stock at 15%, so 63 shares.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "BAJFINANCE.NS"
+   },
+   {
+    "approved_qty": 251,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 578 shares would make ETERNAL 25.5% of the book; R1 caps one stock at 15%, so 251 shares.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "ETERNAL.NS"
+   },
+   {
+    "approved_qty": 17,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Buy makes it 2.6% of NAV, well inside all limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "ICICIBANK.NS"
+   },
+   {
+    "approved_qty": 22,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Buy makes it 14.0% of NAV, inside the 15% single position limit (R1).",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "TITAN.NS"
+   }
+  ]
+ },
+ "68b1ed47d870923b26f7f8d2": {
+  "summary": "Both SELL orders (ADANIENT.NS and BAJFINANCE.NS) are approved in full as they reduce risk and comply with policy. All BUY orders were either reduced or vetoed: ETERNAL.NS and TITAN.NS because of single-stock and sector limits (R1, R2); HCLTECH.NS and ICICIBANK.NS are approved in full as they fit all limits.",
+  "verdicts": [
+   {
+    "approved_qty": 56,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Selling 56 shares reduces position from 16.9% to 0% of NAV, fitting all rules.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "ADANIENT.NS"
+   },
+   {
+    "approved_qty": 35,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Selling 35 shares trims position to 10% of NAV, which is compliant.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "BAJFINANCE.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: Requested buy would breach R1 (single stock 15% limit) and R2 (sector 35% limit); max allowed is zero.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "ETERNAL.NS"
+   },
+   {
+    "approved_qty": 82,
+    "decision": "APPROVE",
+    "reason": "APPROVE: New position will be 11.6% of NAV and sector, within all limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "HCLTECH.NS"
+   },
+   {
+    "approved_qty": 33,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Final weight is 7.6% of NAV, comfortably inside R1 and sector limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "ICICIBANK.NS"
+   },
+   {
+    "approved_qty": 1,
+    "decision": "MODIFY",
+    "reason": "MODIFY: Only 1 share allowed as R1 restricts single stock to 15% of NAV; requested 20 would breach both R1 and R2.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "TITAN.NS"
+   }
+  ]
+ },
+ "9a07bc06c75b17759964f96f": {
+  "summary": "Approved the full sell of TITAN.NS and the proposed buys for BHARTIARTL.NS and TCS.NS, as all are within risk limits. Buy orders for ETERNAL.NS and HCLTECH.NS were heavily cut by R1 (position limit), while TRENT.NS is approved in full beneath the volatility cap (R3).",
+  "verdicts": [
+   {
+    "approved_qty": 25,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELLs always reduce risk and this fully closes the position.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "TITAN.NS"
+   },
+   {
+    "approved_qty": 7,
+    "decision": "APPROVE",
+    "reason": "APPROVE: 7 shares creates a 1.5% position, inside all desk limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "BHARTIARTL.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: Request would breach R1 (single stock 15% cap), and already at 17.2%, cannot increase.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "ETERNAL.NS"
+   },
+   {
+    "approved_qty": 15,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 112 shares would breach R1 (single stock 15% cap); only 15 shares allowed to reach 15%.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "HCLTECH.NS"
+   },
+   {
+    "approved_qty": 52,
+    "decision": "APPROVE",
+    "reason": "APPROVE: 52 shares brings TCS to 14% of NAV, under all position limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "TCS.NS"
+   },
+   {
+    "approved_qty": 16,
+    "decision": "APPROVE",
+    "reason": "APPROVE: 16 shares makes up just 5.2% of NAV, below the strict 7.5% volatility cap (R3).",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "TRENT.NS"
+   }
+  ]
+ },
+ "ad8f158a516614fbfd866b21": {
+  "summary": "Approved all three SELL orders in BAJFINANCE.NS, ICICIBANK.NS, and TITAN.NS as these reduce positions and remain within limits. VETOED both BUY orders in ETERNAL.NS and HCLTECH.NS as they exceed single-stock weight caps per R1.",
+  "verdicts": [
+   {
+    "approved_qty": 90,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Selling 90 shares of BAJFINANCE.NS reduces its weight from 9.5% to 0%, comfortably within all policy limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "BAJFINANCE.NS"
+   },
+   {
+    "approved_qty": 49,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Selling 49 shares of ICICIBANK.NS reduces its position from 7.3% to 0.1% of NAV, inside all limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "ICICIBANK.NS"
+   },
+   {
+    "approved_qty": 3,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Selling 3 shares of TITAN.NS, dropping its weight from 14.1% to 12.5%, well within single stock limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "TITAN.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: Requested 1,213 shares would make ETERNAL.NS 58.5% of NAV, but R1 caps a single stock at 15% and R2 caps a sector at 35%.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "ETERNAL.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: Requested 130 shares would make HCLTECH.NS 29% of NAV, but R1 caps a single stock at 15%.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "HCLTECH.NS"
+   }
+  ]
+ },
+ "ba1767b0a5c2cfdab1471c7f": {
+  "summary": "APPROVED full size for LT.NS and M&M.NS as they remain within all position and cash limits. Reduced BAJFINANCE.NS and ETERNAL.NS to limits due to the 15% per-stock cap (R1), and vetoed MARUTI.NS as its full order would break both the single-stock and sector caps (R1, R2).",
+  "verdicts": [
+   {
+    "approved_qty": 138,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 141 shares would make BAJFINANCE.NS 15.2% of NAV; R1 caps a single stock at 15%. Approving 138 shares, which lands at 14.9%.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "BAJFINANCE.NS"
+   },
+   {
+    "approved_qty": 443,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 837 shares would make ETERNAL.NS 28.3% of NAV; R1 caps one stock at 15%. Approving 443 shares, which keeps it at 15.0%.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "ETERNAL.NS"
+   },
+   {
+    "approved_qty": 8,
+    "decision": "APPROVE",
+    "reason": "APPROVE: 8 shares keep LT.NS at 3.1% of NAV, within all limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "LT.NS"
+   },
+   {
+    "approved_qty": 20,
+    "decision": "APPROVE",
+    "reason": "APPROVE: 20 shares keep M&M.NS at 7.2% of NAV, which is inside every limit.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "M&M.NS"
+   },
+   {
+    "approved_qty": 9,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 28 shares would make MARUTI.NS 45.5% of NAV and Auto sector 52.6%, breaching both R1 (15%) and R2 (35%). Approving 9 shares, which lands at 14.6% for both.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "MARUTI.NS"
+   }
+  ]
+ },
+ "bc3a3d1095c2f48acc2d2d1f": {
+  "summary": "VETOED proposed ONGC.NS and TITAN.NS buys due to single stock weight exceeding the 15% NAV limit (R1). Approved SUNPHARMA.NS at 79 shares\u2014requested 89\u2014but cut back due to the same stock cap (R1).",
+  "verdicts": [
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: ONGC.NS is already at 15.8% of NAV, exceeding the 15% single stock limit (R1); sector weight would also breach the 35% sector cap (R2).",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "ONGC.NS"
+   },
+   {
+    "approved_qty": 79,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 89 shares would make SUNPHARMA.NS 16.8% of NAV, but R1 limits a single stock to 15%; 79 shares is the maximum allowed.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "SUNPHARMA.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: TITAN.NS is already at 14.6% of NAV, so no further BUY is allowed under the 15% single stock limit (R1).",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "TITAN.NS"
+   }
+  ]
+ },
+ "c39f2503a48f0437be5f4ad9": {
+  "summary": "Approved all SELL orders for M&M.NS and RELIANCE.NS as risk is reduced. For BUYs: approved LT.NS for full size, but trimmed MARUTI.NS, SBIN.NS, and TITAN.NS sharply due to single-stock (R1) and sector (R2) limits. Largest cut: TITAN.NS reduced from 96 to 36 shares due to R1/R2, and SBIN.NS vetoed as it breaches R1 single stock cap.",
+  "verdicts": [
+   {
+    "approved_qty": 17,
+    "decision": "APPROVE",
+    "reason": "APPROVE: this SELL order reduces M&M.NS to 8.3% of NAV, inside all limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "M&M.NS"
+   },
+   {
+    "approved_qty": 88,
+    "decision": "APPROVE",
+    "reason": "APPROVE: this SELL order exits RELIANCE.NS entirely, so no risk limit is breached.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "RELIANCE.NS"
+   },
+   {
+    "approved_qty": 15,
+    "decision": "APPROVE",
+    "reason": "APPROVE: this BUY order brings LT.NS to 9.9% of NAV, inside all risk limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "LT.NS"
+   },
+   {
+    "approved_qty": 5,
+    "decision": "MODIFY",
+    "reason": "MODIFY: buying 9 would make MARUTI.NS 20% of NAV, but R1 limits a single stock to 15%. Approving 5 shares brings the weight to 13.4%.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "MARUTI.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: buying any SBIN.NS would exceed the single stock limit; it's already at 15.3% of NAV and R1 caps it at 15%.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "SBIN.NS"
+   },
+   {
+    "approved_qty": 36,
+    "decision": "MODIFY",
+    "reason": "MODIFY: 96 shares would bring TITAN.NS and Consumer Discretionary sector to 39% of NAV, above the respective R1/R2 caps. 36 shares stays within single stock (14.7%) and sector (14.7%) limits.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "TITAN.NS"
+   }
+  ]
+ },
+ "cfec3088db2c5dbb6456059c": {
+  "summary": "All SELL orders (LT.NS, M&M.NS, MARUTI.NS, TITAN.NS) approved in full as they reduce risk. BUYs in HCLTECH.NS and INFY.NS approved in resized quantities due to R1 stock limits; ONGC.NS approved in full. SBIN.NS vetoed as both R1 and R2 prevent any further buying.",
+  "verdicts": [
+   {
+    "approved_qty": 24,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELL reduces risk and is within all limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "LT.NS"
+   },
+   {
+    "approved_qty": 22,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELL reduces risk and is within all limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "M&M.NS"
+   },
+   {
+    "approved_qty": 8,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELL reduces risk and is within all limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "MARUTI.NS"
+   },
+   {
+    "approved_qty": 7,
+    "decision": "APPROVE",
+    "reason": "APPROVE: SELL reduces risk and is within all limits.",
+    "rules": [],
+    "side": "SELL",
+    "ticker": "TITAN.NS"
+   },
+   {
+    "approved_qty": 89,
+    "decision": "MODIFY",
+    "reason": "MODIFY: Can buy only 89 shares because R1 caps one stock at 15% of NAV; requested 146 exceeds this limit.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "HCLTECH.NS"
+   },
+   {
+    "approved_qty": 92,
+    "decision": "MODIFY",
+    "reason": "MODIFY: Can buy only 92 shares because R1 caps one stock at 15% of NAV; requested 97 exceeds this limit.",
+    "rules": [
+     "R1"
+    ],
+    "side": "BUY",
+    "ticker": "INFY.NS"
+   },
+   {
+    "approved_qty": 141,
+    "decision": "APPROVE",
+    "reason": "APPROVE: Position after buying 141 shares stays at 3.5% of NAV, within all limits.",
+    "rules": [],
+    "side": "BUY",
+    "ticker": "ONGC.NS"
+   },
+   {
+    "approved_qty": 0,
+    "decision": "VETO",
+    "reason": "VETO: Already at 16.5% of NAV and R1 caps at 15%; R2 also prevents this buy as Financials sector would reach 44.7%.",
+    "rules": [
+     "R1",
+     "R2"
+    ],
+    "side": "BUY",
+    "ticker": "SBIN.NS"
+   }
+  ]
+ }
+}

@@ -1,0 +1,8 @@
+.env
+agent_config.yaml
+.venv/
+__pycache__/
+*.pyc
+output/*
+!output/.gitkeep
+.pytest_cache/
