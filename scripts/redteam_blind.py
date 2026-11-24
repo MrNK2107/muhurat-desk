@@ -2,7 +2,7 @@
 (data/blind/blind_set.json), labelled by that writer and independently by a
 second reviewer (data/blind/labels_independent.json). Only items both agree on
 are scored; disagreements are listed. Each request is sent once, as a one-order
-proposal on a fresh ₹10,00,000 book on 2 Nov 2026, to five judges:
+proposal on a fresh ₹10,00,000 book on 2 Nov 2026, to four judges:
 
     desk         Muhurat Desk compliance (Lyzr compliance agent + code backstop)
     single       the same model on Lyzr as the client's own trading assistant, same policy

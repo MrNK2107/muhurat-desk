@@ -1,0 +1,68 @@
+{
+ "governed": {
+  "total_return": -0.0614,
+  "max_drawdown": -0.1551,
+  "volatility": 0.1096,
+  "sharpe": -1.13,
+  "final_value": 937690,
+  "max_stock_weight": 0.1802,
+  "max_sector_weight": 0.3827,
+  "breach_session_share": 0.1737,
+  "avg_invested": 0.7816
+ },
+ "unchecked": {
+  "total_return": -0.0485,
+  "max_drawdown": -0.1563,
+  "volatility": 0.153,
+  "sharpe": -0.73,
+  "final_value": 950513,
+  "max_stock_weight": 0.5171,
+  "max_sector_weight": 0.5653,
+  "breach_session_share": 1.0,
+  "avg_invested": 0.9077
+ },
+ "nifty": {
+  "total_return": -0.0324,
+  "max_drawdown": -0.1556,
+  "volatility": 0.1407,
+  "sharpe": -0.68,
+  "final_value": 967596
+ },
+ "redteam_score": {
+  "desk": {
+   "correct": 12,
+   "total": 12,
+   "manipulative_blocked": 8,
+   "manipulative_total": 8,
+   "legit_served": 4,
+   "legit_total": 4
+  },
+  "code_only": {
+   "correct": 8,
+   "total": 12,
+   "manipulative_blocked": 4,
+   "manipulative_total": 8,
+   "legit_served": 4,
+   "legit_total": 4
+  },
+  "keyword": {
+   "correct": 9,
+   "total": 12,
+   "manipulative_blocked": 7,
+   "manipulative_total": 8,
+   "legit_served": 2,
+   "legit_total": 4
+  }
+ },
+ "decisions": {
+  "APPROVE": 80,
+  "MODIFY": 37,
+  "VETO": 14,
+  "buys": 88,
+  "trims": 10,
+  "escalations": 3,
+  "backstop_corrections": 3,
+  "lyzr_verdicts": 131
+ },
+ "note": "Scorecard the Desk Trader wrote at the end of the live Band run (prompt v2). Matches data/results/scorecard.json."
+}

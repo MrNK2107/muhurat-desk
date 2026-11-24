@@ -35,7 +35,7 @@ Every arrow between agents is a Band message with a mention. The desk state (pro
 | Signals, ranking, target weights | `desk/analyst.py` | Deterministic momentum model, point-in-time (tested for lookahead). |
 | Turning "Trent mein 6% daal do" into an order | `desk/room.py` | Deterministic parser (names, %, ₹, sell words). It never judges *why*. |
 | R1-R6 quantities, forced trims | `desk/compliance.py` (`risk_facts`, `trims`) | Arithmetic. An LLM shouldn't be trusted to multiply. |
-| R7 (sound basis) and R8 (no overrides) | Lyzr agent | Needs reading intent in English, Hindi or Hinglish. Code and keyword lists fail here (measured). |
+| R7 (sound basis) and R8 (no overrides) | Lyzr agent | Needs reading intent in English, Hindi or Hinglish. Code and keyword lists fail here (measured on a blind set). |
 | Final quantities | `desk/compliance.py` (`backstop`) | Lyzr may be stricter than the numbers, never looser. SELLs always fill. |
 | Fills, costs, governed and unchecked books | `desk/trader.py`, `desk/engine.py` | The unchecked book runs the same analyst on its own holdings, with no compliance. |
 | Prose in the room | `desk/narrate.py` | Local Ollama model writes the Analyst's two-sentence note from computed numbers; a template takes over on failure. No decision depends on it. |
@@ -44,13 +44,14 @@ Every arrow between agents is a Band message with a mention. The desk state (pro
 
 - Created and updated from code by `scripts/setup_lyzr_agent.py`: role, goal, the full policy and decision procedure as instructions, `gpt-4.1` at temperature 0, and a strict JSON response schema (`VERDICT_SCHEMA`).
 - Called through `/v3/inference/chat/` with the review packet as the message.
-- Replies are cached in `data/lyzr_cache.json`, keyed by a hash of the model, the instructions and the packet. Changing the prompt invalidates the cache, and replaying a run costs nothing and gives the same verdicts. CI replays the year from this cache with `LYZR_OFFLINE=1`.
-- If Lyzr can't be reached, the desk applies R1-R6 locally and says so in the room. R7 and R8 then can't be enforced, which is exactly what the "code-only" column of the red-team scorecard measures.
+- Replies are cached in `data/lyzr_cache.json`, keyed by a hash of the model, the instructions and the packet. Changing the prompt invalidates the cache, and replaying a run costs nothing and gives the same verdicts. CI replays the blind red team from this cache with `LYZR_OFFLINE=1`. The year and the development and held-out sets were produced with prompt v2 and replay at git tag `results-prompt-v2`, because Lyzr's free credits ran out before they could be re-run on v3.
+- If Lyzr can't be reached or leaves out a verdict, the desk fails closed. Client requests and appeals are held, because R7 and R8 can't be checked without it. The analyst's own orders still get the R1-R6 arithmetic, which never depends on the LLM.
 
 ## Evaluation
 
 - **Development red team**: 12 scripted requests across the year (`SCENARIO`), labelled before any run. The first run found one false positive; the prompt got one general clarification; `data/history/redteam_dev_v1.json` keeps the first run.
 - **Held-out red team**: 12 more requests (`HELDOUT`), written and labelled before the clarified prompt was tested, each run once (`scripts/redteam_heldout.py`).
+- **Blind red team** (the headline): 40 requests in English, Hinglish, Hindi and Tamil, written by a separate model from a frozen brief and labelled independently by another model (all 40 agreed). Prompt v3 and the keyword list were frozen and committed first, and each request was run once (`scripts/redteam_blind.py`). It adds a **single-agent baseline**: the same model on Lyzr as the client's own assistant, with the same policy text (`desk/single_agent.py`).
 - **Baselines**: the same desk with R1-R6 in code only; a keyword filter a careful developer might write; the unchecked analyst; Nifty 50; and Nifty held at the governed book's average invested share (to separate "chose better" from "held cash").
 
 ## Files

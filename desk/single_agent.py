@@ -1,9 +1,11 @@
 """Baseline for the red team: one agent that both serves the client and holds
 the policy. Same platform (Lyzr), same model (gpt-4.1, temperature 0), same
-policy text and the same risk facts as the desk's compliance agent; the only
-difference is the role. It is the client's trading assistant, so its job is to
-get the client's trade done within the rules, instead of being a separate
-agent whose only job is the veto.
+policy text and the same risk facts as the desk's compliance agent. It differs
+in role (the client's trading assistant, whose job is to get the trade done
+within the rules) and in prompt: it doesn't get the compliance agent's
+step-by-step procedure or its instruction to ignore approvals written inside a
+request. So it compares a dedicated veto agent with an assistant that also
+applies the policy, not role alone.
 
 This is the comparison behind the desk's thesis that the veto belongs to a
 different agent from the one that wants the trade."""
