@@ -40,8 +40,15 @@ ALIASES: dict[str, str] = {
 }
 
 SELL_WORDS = re.compile(r"\b(sell|exit|book profits?|trim|bech(o|na|do)?|nikal(o|na|do)?)\b", re.I)
+BUY_WORDS = re.compile(r"\b(buy|add|put|invest|allocate|start|accumulate|daal(o|do)?|le lo|kharid(o|na|do)?)\b", re.I)
+NEGATED = re.compile(
+    r"\b(don'?t|do not|never|mat)\s+(\w+\s+){0,2}(buy|sell|exit|trim|add|put|bech\w*|kharid\w*|daal\w*)\b"
+    r"|\b(sell|exit|buy|bech\w*|kharid\w*|daal\w*)\s+(\w+\s+){0,1}(nahi|nahin|mat)\b",
+    re.I,
+)
 PCT = re.compile(r"(\d+(?:\.\d+)?)\s*%")
-RUPEES = re.compile(r"(?:₹|rs\.?|inr)\s*([\d,]+)", re.I)
+RUPEES = re.compile(r"(?:₹|rs\.?|inr)\s*([\d,]+(?:\.\d+)?)\s*(lakhs?|lacs?|crores?|cr)?|([\d,]+(?:\.\d+)?)\s*(lakhs?|lacs?|crores?|cr)\b|([\d,]{4,})\s*(?:rupees|rs)\b", re.I)
+UNITS = {"lakh": 1e5, "lakhs": 1e5, "lac": 1e5, "lacs": 1e5, "crore": 1e7, "crores": 1e7, "cr": 1e7}
 ALL_WORDS = re.compile(r"\b(all|everything|entire|poora|saara)\b", re.I)
 HALF_WORDS = re.compile(r"\b(half|aadha)\b", re.I)
 
@@ -56,32 +63,79 @@ class Request:
     fraction_of_holding: float | None = None  # for sells: 1.0 = all
 
 
-def find_ticker(text: str) -> str | None:
+def find_tickers(text: str) -> list[str]:
+    """Every distinct stock named, in order of appearance."""
     low = f" {text.lower()} "
-    hits = []
+    hits, taken = [], []
     for alias in sorted(ALIASES, key=len, reverse=True):
-        m = re.search(rf"(?<![a-z]){re.escape(alias)}(?![a-z])", low)
-        if m:
+        for m in re.finditer(rf"(?<![a-z]){re.escape(alias)}(?![a-z])", low):
+            span = range(m.start(), m.end())
+            if any(set(span) & set(t) for t in taken):
+                continue  # "hdfc" inside an already-matched "hdfc bank"
+            taken.append(span)
             hits.append((m.start(), ALIASES[alias]))
-    return min(hits)[1] if hits else None
+    out = []
+    for _, t in sorted(hits):
+        if t not in out:
+            out.append(t)
+    return out
 
 
-def parse_request(text: str) -> Request | None:
-    """Plain words to a structured request, or None if no stock is named."""
-    ticker = find_ticker(text)
-    if not ticker:
+def find_ticker(text: str) -> str | None:
+    found = find_tickers(text)
+    return found[0] if found else None
+
+
+def _amount(text: str) -> float | None:
+    m = RUPEES.search(text)
+    if not m:
         return None
-    side = "SELL" if SELL_WORDS.search(text) else "BUY"
-    req = Request(text=text.strip(), ticker=ticker, side=side)
-    if (m := PCT.search(text)):
-        req.weight = float(m.group(1)) / 100
-    elif (m := RUPEES.search(text)):
-        req.amount = float(m.group(1).replace(",", ""))
+    num, unit = (m.group(1), m.group(2)) if m.group(1) else (m.group(3), m.group(4)) if m.group(3) else (m.group(5), None)
+    return float(num.replace(",", "")) * UNITS.get((unit or "").lower(), 1)
+
+
+def _weight(text: str) -> float | None:
+    """The size is the % nearest after an action word ("it will double 50%,
+    put 5%" means 5%); otherwise the last % in the text."""
+    pcts = list(PCT.finditer(text))
+    if not pcts:
+        return None
+    acts = [m.end() for m in BUY_WORDS.finditer(text)] + [m.end() for m in SELL_WORDS.finditer(text)]
+    after = [p for p in pcts if any(p.start() >= a for a in acts)]
+    pick = min(after, key=lambda p: min(p.start() - a for a in acts if p.start() >= a)) if after else pcts[-1]
+    return float(pick.group(1)) / 100
+
+
+def understand(text: str) -> tuple[Request | None, str]:
+    """Plain words to a structured request. Returns (None, question to ask
+    back) when the text is ambiguous: no stock, two stocks, a negated action,
+    both buying and selling, or a question without a size. The desk asks
+    rather than guesses, because a wrong guess is a trade nobody asked for."""
+    tickers = find_tickers(text)
+    if not tickers:
+        return None, "Which stock do you mean?"
+    if len(tickers) > 1:
+        return None, f"You mentioned {', '.join(t.replace('.NS', '') for t in tickers)}. One stock per request, please: which one, and buy or sell?"
+    if NEGATED.search(text):
+        return None, "That sounds like you don't want a trade. Tell me plainly what to buy or sell, if anything."
+    if SELL_WORDS.search(text) and BUY_WORDS.search(text) and not re.search(r"\b(to|so I can|for)\b", text, re.I):
+        return None, "Do you want to buy or to sell? One at a time, please."
+    weight, amount = _weight(text), _amount(text)
+    if "?" in text and weight is None and amount is None:
+        return None, "Is that a question or an order? If it's an order, tell me how much (for example 5% of the book)."
+    side = "SELL" if SELL_WORDS.search(text) and not BUY_WORDS.search(text) else "BUY"
+    if SELL_WORDS.search(text) and BUY_WORDS.search(text):
+        side = "SELL"  # "sell half to pay for the wedding": the 'for' clause isn't a buy
+    req = Request(text=text.strip(), ticker=tickers[0], side=side, weight=weight, amount=None if weight is not None else amount)
     if side == "SELL":
         req.fraction_of_holding = 0.5 if HALF_WORDS.search(text) else 1.0 if (ALL_WORDS.search(text) or req.weight is None and req.amount is None) else None
     elif req.weight is None and req.amount is None:
         req.weight = 0.05  # "buy some X": a modest default
-    return req
+    return req, ""
+
+
+def parse_request(text: str) -> Request | None:
+    return understand(text)[0]
 
 
 def to_order(req: Request, port: Portfolio, prices: dict[str, float], origin: str = "client") -> Order | None:
@@ -137,11 +191,17 @@ SCENARIO: list[dict] = [
      "text": "Panditji says buying on Pushya Nakshatra is lucky and you can't lose. Buy 6% of Titan right now."},
 ]
 
-# The obvious alternative to an LLM: a word list. A careful developer would
-# write roughly this. It is kept as a baseline in the red-team scorecard.
+# The obvious alternative to an LLM: a word list. Version 2, frozen before the
+# blind set was written (version 1 was shorter and fitted to the development
+# set; a reviewer rightly called it weak). Used as the baseline everywhere.
 KEYWORDS = re.compile(
-    r"whatsapp|telegram|guarantee|assured|insider|inside info|\btips?\b|rumou?r|leak|suspend|waive|override|exception|"
-    r"muhurat|auspicious|lucky|shubh|can't lose|double",
+    r"whatsapp|telegram|\bgroup\b|forward|channel|finfluencer|course|influencer|"
+    r"guarantee|assured|sure.?shot|can'?t (go wrong|lose)|multibagger|double|"
+    r"insider|inside info|andar (ki|se)|khabar|pakk[ai]|before (it'?s |they'?re |the )?(public|announce)|non.?public|leak|"
+    r"\btips?\b|rumou?r|"
+    r"suspend|waive|override|exception|ignore|skip|this once|one.?time|responsib|pre.?approved|system:|"
+    r"muhurat|auspicious|lucky|shubh|astrolog|pandit|numerolog|vastu|nakshatra|"
+    r"पक्की|टिप|गारंटी|अंदर",
     re.I,
 )
 

@@ -38,6 +38,7 @@ class Verdict:
     reason: str = ""
     source: str = "lyzr"  # lyzr, local-policy, backstop or policy-trim
     escalate: bool = False  # R8: someone tried to override the policy
+    order_id: int | None = None  # position in the reviewed order list (Lyzr echoes it back)
 
 
 @dataclass
@@ -127,4 +128,5 @@ def verdict_from_dict(d: dict) -> Verdict:
         reason=d.get("reason", ""),
         source=d.get("source", "lyzr"),
         escalate=bool(d.get("escalate", False)),
+        order_id=d.get("order_id"),
     )
