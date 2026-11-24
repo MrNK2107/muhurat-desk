@@ -43,18 +43,22 @@ def _llm(prompt: str) -> str | None:
         return None
 
 
+def _n(k: int, word: str) -> str:
+    return f"{k} {word}" + ("" if k == 1 else "s")
+
+
 def _name(t: str) -> str:
     return t.replace(".NS", "")
 
 
 def analyst_note(proposal: dict) -> str:
     sig = proposal["top_signals"]
-    buys = [o for o in proposal["orders"] if o["side"] == "BUY"]
-    sells = [o for o in proposal["orders"] if o["side"] == "SELL"]
+    buys = [o for o in proposal["orders"] if o["side"] == "BUY" and o.get("origin", "analyst") == "analyst"]
+    sells = [o for o in proposal["orders"] if o["side"] == "SELL" and o.get("origin", "analyst") == "analyst"]
     facts = "; ".join(f"{_name(s['ticker'])} 3m {s['mom_3m']:+.1%}, 6m {s['mom_6m']:+.1%}, vol {s['vol_20d']:.0%}" for s in sig)
     template = (
         f"Strongest momentum today: {', '.join(_name(s['ticker']) for s in sig[:3])}. "
-        f"Proposing {len(buys)} buys and {len(sells)} sells to rotate into strength."
+        f"Proposing {_n(len(buys), 'buy')} and {_n(len(sells), 'sell')} to rotate into strength."
     )
     prose = _llm(
         "You are an aggressive momentum analyst on an Indian equity paper-trading desk. "

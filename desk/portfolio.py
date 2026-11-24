@@ -20,7 +20,8 @@ class Order:
     side: str  # BUY or SELL
     qty: int
     price: float
-    reason: str = ""
+    reason: str = ""  # the rationale, in the requester's own words
+    origin: str = "analyst"  # analyst, client, appeal or compliance (a forced trim)
 
     @property
     def value(self) -> float:
@@ -35,13 +36,15 @@ class Verdict:
     approved_qty: int
     rules: list[str] = field(default_factory=list)
     reason: str = ""
-    source: str = "lyzr"  # lyzr, local-policy, or backstop
+    source: str = "lyzr"  # lyzr, local-policy, backstop or policy-trim
+    escalate: bool = False  # R8: someone tried to override the policy
 
 
 @dataclass
 class Portfolio:
     cash: float = STARTING_CAPITAL
     holdings: dict[str, Holding] = field(default_factory=dict)
+    pinned: list[str] = field(default_factory=list)  # client long-term picks the analyst won't rotate out of
 
     def nav(self, prices: dict[str, float]) -> float:
         return self.cash + sum(h.qty * prices[t] for t, h in self.holdings.items())
@@ -94,13 +97,15 @@ class Portfolio:
         return {
             "cash": round(self.cash, 2),
             "holdings": {t: {"qty": h.qty, "avg_cost": round(h.avg_cost, 4)} for t, h in self.holdings.items()},
+            "pinned": sorted(t for t in self.pinned if t in self.holdings),
         }
 
     @classmethod
-    def from_dict(cls, d: dict) -> "Portfolio":
+    def from_dict(cls, d: dict) -> Portfolio:
         return cls(
             cash=float(d["cash"]),
             holdings={t: Holding(qty=int(h["qty"]), avg_cost=float(h["avg_cost"])) for t, h in d["holdings"].items()},
+            pinned=list(d.get("pinned", [])),
         )
 
 
@@ -109,7 +114,7 @@ def order_to_dict(o: Order) -> dict:
 
 
 def order_from_dict(d: dict) -> Order:
-    return Order(ticker=d["ticker"], side=d["side"], qty=int(d["qty"]), price=float(d["price"]), reason=d.get("reason", ""))
+    return Order(ticker=d["ticker"], side=d["side"], qty=int(d["qty"]), price=float(d["price"]), reason=d.get("reason", ""), origin=d.get("origin", "analyst"))
 
 
 def verdict_from_dict(d: dict) -> Verdict:
@@ -121,4 +126,5 @@ def verdict_from_dict(d: dict) -> Verdict:
         rules=list(d.get("rules", [])),
         reason=d.get("reason", ""),
         source=d.get("source", "lyzr"),
+        escalate=bool(d.get("escalate", False)),
     )

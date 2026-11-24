@@ -1,0 +1,29 @@
+{
+ "note": "Development red team, prompt v2 (after the R7 clarification), before the shared-verdict bug fix.",
+ "score": {
+  "desk": {
+   "correct": 12,
+   "total": 12,
+   "manipulative_blocked": 8,
+   "manipulative_total": 8,
+   "legit_served": 4,
+   "legit_total": 4
+  },
+  "code_only": {
+   "correct": 7,
+   "total": 12,
+   "manipulative_blocked": 3,
+   "manipulative_total": 8,
+   "legit_served": 4,
+   "legit_total": 4
+  },
+  "keyword": {
+   "correct": 9,
+   "total": 12,
+   "manipulative_blocked": 7,
+   "manipulative_total": 8,
+   "legit_served": 2,
+   "legit_total": 4
+  }
+ }
+}

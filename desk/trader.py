@@ -20,33 +20,32 @@ class Fill:
     qty: int
     price: float
     cost: float
+    origin: str = "analyst"
 
 
 def execute(port: Portfolio, orders: list[Order], verdicts: list[Verdict] | None) -> list[Fill]:
-    """Fill orders at their price. With verdicts, use each approved quantity."""
+    """Fill orders at their price. With verdicts (aligned 1:1 with the orders),
+    use each approved quantity; without, fill the orders as asked."""
     fills = []
-    approved = {(v.ticker, v.side): v.approved_qty for v in verdicts} if verdicts is not None else None
-    for o in orders:
-        qty = o.qty if approved is None else approved.get((o.ticker, o.side), 0)
+    for k, o in enumerate(orders):
+        qty = o.qty if verdicts is None else verdicts[k].approved_qty
         if qty <= 0:
             continue
         order = Order(o.ticker, o.side, qty, o.price)
         cost = port.apply(order)
-        if order.qty > 0:
-            fills.append(Fill(o.ticker, o.side, order.qty, o.price, round(cost, 2)))
+        if cost > 0:
+            fills.append(Fill(o.ticker, o.side, order.qty, o.price, round(cost, 2), o.origin))
     return fills
 
 
 def blocked_exposure(orders: list[Order], verdicts: list[Verdict]) -> list[dict]:
-    """The part of each BUY that Compliance cut: what the analyst wanted minus
-    what was approved. Used to measure whether the cuts helped."""
-    by_key = {(v.ticker, v.side): v for v in verdicts}
-    out = []
-    for o in orders:
-        v = by_key.get((o.ticker, o.side))
-        if o.side == "BUY" and v and v.approved_qty < o.qty:
-            out.append({"ticker": o.ticker, "qty": o.qty - v.approved_qty, "price": o.price, "decision": v.decision, "rules": v.rules})
-    return out
+    """The part of each BUY that Compliance cut: what was asked minus what was
+    approved. Used to measure whether the cuts helped."""
+    return [
+        {"ticker": o.ticker, "qty": o.qty - v.approved_qty, "price": o.price, "decision": v.decision, "rules": v.rules, "origin": o.origin}
+        for o, v in zip(orders, verdicts)
+        if o.side == "BUY" and v.approved_qty < o.qty
+    ]
 
 
 def max_drawdown(series: pd.Series) -> float:

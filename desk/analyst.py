@@ -43,12 +43,15 @@ def target_weights(sigs: dict[str, Signal], invest: float = 1.0) -> dict[str, fl
 
 def propose(port: Portfolio, sigs: dict[str, Signal], prices: dict[str, float]) -> list[Order]:
     """Orders that move the book to the analyst's target. Sells first, so the
-    trader frees cash before buying."""
+    trader frees cash before buying. Holdings the client pinned as long-term
+    picks are left alone and the target is scaled to the rest of the book."""
     nav = port.nav(prices)
-    target = target_weights(sigs)
     current = port.weights(prices)
+    pinned = {t for t in port.pinned if t in current}
+    target = {t: w for t, w in target_weights(sigs, 1.0 - sum(current[t] for t in pinned)).items() if t not in pinned}
+    ranks = {t: k for k, (t, _) in enumerate(sorted(score(sigs).items(), key=lambda kv: kv[1], reverse=True), start=1)}
     sells, buys = [], []
-    for t in sorted(set(target) | set(current)):
+    for t in sorted((set(target) | set(current)) - pinned):
         delta_value = (target.get(t, 0.0) - current.get(t, 0.0)) * nav
         if abs(delta_value) < MIN_TRADE_VALUE:
             continue
@@ -60,6 +63,31 @@ def propose(port: Portfolio, sigs: dict[str, Signal], prices: dict[str, float]) 
             why = "dropped out of the top momentum names" if t not in target else "trim to target weight"
             sells.append(Order(t, "SELL", qty, prices[t], why))
         else:
-            why = f"3m {s.mom_3m:+.1%}, 6m {s.mom_6m:+.1%}, target {target[t]:.0%} of NAV"
+            why = f"momentum rank #{ranks[t]} of {len(ranks)}: 3m {s.mom_3m:+.1%}, 6m {s.mom_6m:+.1%}; target {target[t]:.0%} of NAV"
             buys.append(Order(t, "BUY", qty, prices[t], why))
     return sells + buys
+
+
+def revise(port: Portfolio, sigs: dict[str, Signal], prices: dict[str, float], cut: list[dict], held_back: set[str]) -> list[Order]:
+    """The analyst's answer to a review. Compliance cut some BUYs; the analyst
+    still wants the money at work, so it offers the cut amount to its
+    next-strongest names (it doesn't know the policy, so Compliance will
+    resize these too). ``cut`` lists {ticker, value} of what was cut,
+    ``held_back`` the names it won't add to (already proposed or vetoed)."""
+    value = sum(c["value"] for c in cut)
+    if value < 2 * MIN_TRADE_VALUE:
+        return []
+    ranked = [t for t, _ in sorted(score(sigs).items(), key=lambda kv: kv[1], reverse=True)]
+    ranks = {t: k for k, t in enumerate(ranked, start=1)}
+    names = [t for t in ranked if t not in held_back and sigs[t].mom_3m > 0][:3]
+    if not names:
+        return []
+    each = value / len(names)
+    cut_names = ", ".join(c["ticker"].replace(".NS", "") for c in cut)
+    out = []
+    for t in names:
+        qty = int(each / prices[t])
+        if qty * prices[t] >= MIN_TRADE_VALUE:
+            s = sigs[t]
+            out.append(Order(t, "BUY", qty, prices[t], f"redeploying money cut from {cut_names}: next-strongest name, rank #{ranks[t]}, 3m {s.mom_3m:+.1%}, 6m {s.mom_6m:+.1%}"))
+    return out

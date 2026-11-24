@@ -62,8 +62,8 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 </style></head><body><main>
 <h1>Muhurat Desk</h1>
 <p class="sub">Samvat 2082 replay · {{ start }} (Muhurat trading) → {{ end }} · ₹10,00,000 paper capital · 3 agents on Band, compliance by a Lyzr agent</p>
-<div class="card hero"><div class="big">₹{{ kept }} kept</div>
-<div>The unchecked analyst book ended at ₹{{ fmt(u.final_value) }}. With every trade passing Compliance, the same analyst ended at ₹{{ fmt(g.final_value) }}, and the worst fall from a peak shrank from {{ pct(u.max_drawdown) }} to {{ pct(g.max_drawdown) }}.</div></div>
+<div class="card hero"><div class="big">{{ rt.desk.manipulative_blocked }}/{{ rt.desk.manipulative_total }} manipulation attempts stopped · {{ rt.desk.legit_served }}/{{ rt.desk.legit_total }} sound requests served</div>
+<div>Code-only rules stopped {{ rt.code_only.manipulative_blocked }}/{{ rt.code_only.manipulative_total }}; a keyword filter stopped {{ rt.keyword.manipulative_blocked }}/{{ rt.keyword.manipulative_total }} but refused {{ rt.keyword.legit_total - rt.keyword.legit_served }} sound requests. The governed book's largest single stock reached {{ pct(g.max_stock_weight) }} against {{ pct(u.max_stock_weight) }} unchecked.</div></div>
 <h2>Scorecard</h2>
 <div class="grid3">{% for key, label, color in series %}{% set s = stats[key] %}
 <div class="card"><h3><span class="dot" style="background:{{ color }}"></span>{{ label }}</h3><div class="big">{{ pct(s.total_return, sign=True) }}</div>
@@ -73,10 +73,10 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 <h2>Compliance decisions</h2>
 <div class="grid3"><div class="card"><h3>Approved</h3><div class="big APPROVE">{{ counts.APPROVE }}</div></div><div class="card"><h3>Resized</h3><div class="big MODIFY">{{ counts.MODIFY }}</div></div><div class="card"><h3>Vetoed</h3><div class="big VETO">{{ counts.VETO }}</div></div></div>
 <h2>Audit trail</h2>
-{% for c in cycles %}<details{% if loop.first %} open{% endif %}><summary>{{ c.proposal.date }}{% if loop.first %} · Muhurat trading{% endif %} — {{ c.review.verdicts|length }} orders, {{ c.review.verdicts|selectattr('decision','ne','APPROVE')|list|length }} cut</summary>
-<p>{{ c.review.summary }}</p><div class="scroll"><table><tr><th>Order</th><th>Asked</th><th>Decision</th><th>Filled</th><th>Reason</th><th>By</th></tr>
-{% for o, v in zip(c.proposal.orders, c.review.verdicts) %}<tr><td>{{ o.side }} {{ o.ticker|replace('.NS','') }}</td><td>{{ o.qty }}</td><td><span class="b {{ v.decision }}">{{ v.decision }}</span>{% if v.rules %} {{ v.rules|join(', ') }}{% endif %}</td><td>{{ v.approved_qty }}</td><td>{{ v.reason }}</td><td>{{ v.source }}</td></tr>{% endfor %}
-</table></div></details>{% endfor %}
+{% for c in cycles %}<details{% if loop.first %} open{% endif %}><summary>{{ c.proposal.date }}{% if loop.first %} · Muhurat trading{% endif %} — {{ c.review.verdicts|length }} orders{% if c.review2 %} + {{ c.review2.verdicts|length }} in the revision round{% endif %}</summary>
+{% for rv in [c.review, c.review2] if rv %}<p><b>{{ 'Round 1' if loop.first else 'Round 2 (analyst revision)' }}:</b> {{ rv.summary }}</p><div class="scroll"><table><tr><th>Order</th><th>From</th><th>Asked</th><th>Decision</th><th>Filled</th><th>Reason</th><th>By</th></tr>
+{% for o, v in zip(rv.orders, rv.verdicts) %}<tr><td>{{ o.side }} {{ o.ticker|replace('.NS','') }}</td><td>{{ o.origin }}</td><td>{{ o.qty }}</td><td><span class="b {{ v.decision }}">{{ v.decision }}</span>{% if v.rules %} {{ v.rules|join(', ') }}{% endif %}{% if v.escalate %} ⚠ escalated{% endif %}</td><td>{{ v.approved_qty }}</td><td>{{ v.reason }}</td><td>{{ v.source }}</td></tr>{% endfor %}
+</table></div>{% endfor %}</details>{% endfor %}
 <p class="note">Educational paper-trading simulation on historical NSE daily closes (adjusted, via Yahoo Finance). Fills at the checkpoint close with 0.1% costs. The risk policy is the desk's own and is not a SEBI rulebook. Nothing here is investment advice.</p>
 </main></body></html>"""
 )
@@ -85,12 +85,12 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 def write_report(card: dict, path: Path) -> Path:
     from collections import Counter
 
-    counts = Counter(v["decision"] for c in card["cycles"] for v in c["review"]["verdicts"])
+    counts = Counter(v["decision"] for c in card["cycles"] for k in ("review", "review2") if c.get(k) for v in c[k]["verdicts"])
     g, u = card["governed"], card["unchecked"]
     out = TEMPLATE.render(
         start=card["curves"]["dates"][0],
         end=card["curves"]["dates"][-1],
-        kept=f"{g['final_value'] - u['final_value']:,}",
+        rt=card.get("redteam_score") or {k: {"manipulative_blocked": 0, "manipulative_total": 0, "legit_served": 0, "legit_total": 0} for k in ("desk", "code_only", "keyword")},
         g=g,
         u=u,
         stats={k: card[k] for k, _, _ in SERIES},

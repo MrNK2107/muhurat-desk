@@ -17,4 +17,15 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pytest>=8.0"]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[tool.ruff]
+line-length = 200
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501", "B905", "B023"]  # zips are over aligned lists; closures are called inside their loop
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
