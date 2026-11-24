@@ -22,12 +22,13 @@ from desk.engine import analyst_step, revision_step
 from desk.market import checkpoints, load_prices
 from desk.narrate import analyst_note
 from desk.portfolio import Portfolio
-from desk.room import parse_request
+from desk.room import understand
 
 PRICES = load_prices()
 POINTS = checkpoints(PRICES)
-OPEN = re.compile(r"\b(open|start|run)\b.*\b(desk|year|samvat)\b", re.I)
-LATEST: dict = {}  # the last book seen, so a live request trades on the real book
+OPEN = re.compile(r"\bopen\b.*\bdesk\b", re.I)
+LATEST: dict[str, dict] = {}  # per room: the last book seen, so a live request trades on the real book
+ACTIVE: set[str] = set()  # rooms with a year in progress
 
 
 def _order_lines(orders: list[dict]) -> list[str]:
@@ -43,14 +44,21 @@ class AnalystAdapter(DeskAdapter):
     async def handle(self, msg, payload):
         if payload is None:
             text = strip_mentions(msg.content)
+            room = self.__dict__.get("room_id", "")
             if OPEN.search(text):
+                ACTIVE.add(room)
                 return await self.checkpoint(msg.id[:8], 0, Portfolio().to_dict(), Portfolio().to_dict(), msg.sender_id)
-            if parse_request(text):
-                return await self.live_request(text, msg.sender_id, msg.id[:8])
-            return None
+            req, ask = understand(text)
+            if req is None and ask == "Which stock do you mean?":
+                return None  # small talk, not a trade request
+            if room in ACTIVE:
+                return "The desk is in the middle of the Samvat 2082 replay. Ask me again once the Trader closes the books.", None, f"id:{msg.sender_id}"
+            if req is None:
+                return ask, None, f"id:{msg.sender_id}"
+            return await self.live_request(text, msg.sender_id, msg.id[:8])
         stage = payload.get("stage")
         if stage == "filled" and self.once(payload, "filled"):
-            LATEST.update(book=payload["book"], shadow=payload["shadow"], i=payload["i"], human=payload["human"])
+            LATEST[self.__dict__.get("room_id", "")] = {"book": payload["book"], "shadow": payload["shadow"], "i": payload["i"]}
             if payload.get("live"):
                 return None
             if payload["round"] == 1:
@@ -64,6 +72,7 @@ class AnalystAdapter(DeskAdapter):
             nxt = payload["i"] + 1
             if nxt < len(POINTS):
                 return await self.checkpoint(payload["run"], nxt, payload["book"], payload["shadow"], payload["human"])
+            ACTIVE.discard(self.__dict__.get("room_id", ""))
             body = {"stage": "close", "run": payload["run"], "i": payload["i"], "round": 3, "human": payload["human"]}
             return "That was the last checkpoint of Samvat 2082. Trader, please close the books.", body, "trader_agent"
         return None
@@ -80,9 +89,10 @@ class AnalystAdapter(DeskAdapter):
         return f"{header}\n{note}{relay}\n" + "\n".join(lines), body, "compliance_agent"
 
     async def live_request(self, text: str, human: str, rid: str):
-        book = LATEST.get("book") or Portfolio().to_dict()
-        shadow = LATEST.get("shadow") or book
-        i = LATEST.get("i", len(POINTS) - 1)
+        last = LATEST.get(self.__dict__.get("room_id", ""), {})
+        book = last.get("book") or Portfolio().to_dict()
+        shadow = last.get("shadow") or book
+        i = last.get("i", len(POINTS) - 1)
         proposal = await asyncio.to_thread(analyst_step, PRICES, POINTS[i], book, None, None, [text])
         proposal["orders"] = [o for o in proposal["orders"] if o.get("origin") == "client"]
         if not proposal["orders"]:

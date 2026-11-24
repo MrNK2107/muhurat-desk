@@ -336,7 +336,7 @@ class LyzrCompliance:
 
     def __init__(self, cache_path: Path = LYZR_CACHE, offline: bool = False):
         self.cache_path = cache_path
-        self.cache: dict = json.loads(cache_path.read_text()) if cache_path.exists() else {}
+        self.cache: dict = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
         self.offline = offline or os.environ.get("LYZR_OFFLINE") == "1"
         self.calls = 0
 
@@ -362,7 +362,7 @@ class LyzrCompliance:
         parsed = json.loads(text[text.find("{"): text.rfind("}") + 1])
         self.cache[key] = parsed
         tmp = self.cache_path.with_suffix(".tmp")
-        tmp.write_text(json.dumps(self.cache, indent=1, sort_keys=True))
+        tmp.write_text(json.dumps(self.cache, indent=1, sort_keys=True), encoding="utf-8")
         tmp.replace(self.cache_path)  # atomic, so a crash never leaves half a cache
         return parsed
 

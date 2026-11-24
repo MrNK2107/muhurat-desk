@@ -18,10 +18,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-import pandas as pd  # noqa: E402
 
 from desk.compliance import LyzrCompliance  # noqa: E402
-from desk.config import OUTPUT_DIR, ROOT  # noqa: E402
+from desk.config import OUTPUT_DIR  # noqa: E402
 from desk.engine import _code_only, compliance_step, final_book  # noqa: E402
 from desk.market import checkpoints, load_prices, price_on  # noqa: E402
 from desk.portfolio import Portfolio, order_to_dict  # noqa: E402
@@ -75,13 +74,9 @@ def main() -> None:
 
     out = {"rows": rows, "score": {w: score(w) for w in ("desk", "code_only", "keyword")}, "lyzr_calls": client.calls}
     (OUTPUT_DIR / "offline" / "heldout.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
-    site = ROOT / "site" / "data"
-    site.mkdir(parents=True, exist_ok=True)
-    (site / "heldout.json").write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
     print(json.dumps(out["score"]))
     print(f"Lyzr calls: {client.calls}")
 
 
 if __name__ == "__main__":
-    pd.options.mode.chained_assignment = None
     main()

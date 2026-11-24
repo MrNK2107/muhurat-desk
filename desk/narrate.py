@@ -63,8 +63,11 @@ def analyst_note(proposal: dict) -> str:
     prose = _llm(
         "You are an aggressive momentum analyst on an Indian equity paper-trading desk. "
         f"Date {proposal['date']}. Top signals: {facts}. You are proposing {len(buys)} buys and {len(sells)} sells. "
+        "This desk is long only: it buys shares and sells shares it holds, and never shorts. "
         "Write exactly two short sentences for the trading room explaining your view. Use only these numbers. No disclaimers, no markdown."
     )
+    if prose and re.search(r"\bshort(s|ed|ing)?\b(?!-)", prose, re.I):
+        prose = None  # a long-only desk never shorts; don't let the model say it does
     return prose or template
 
 

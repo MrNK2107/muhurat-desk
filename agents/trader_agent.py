@@ -58,6 +58,12 @@ class TraderAdapter(DeskAdapter):
         path = _ledger_path(payload["run"])
         ledger = json.loads(path.read_text(encoding="utf-8"))
         cycles = [ledger[k] for k in sorted(ledger, key=int)]
+        audit = path.parent / "compliance"
+        for k, c in zip(sorted(ledger, key=int), cycles):  # packets stay out of Band messages; take them from the audit files
+            for key, rnd in (("review", 1), ("review2", 2)):
+                f = audit / f"{int(k):02d}-r{rnd}.json"
+                if c.get(key) and "packet" not in c[key] and f.exists():
+                    c[key]["packet"] = json.loads(f.read_text(encoding="utf-8"))["packet"]
         card = await asyncio.to_thread(scorecard, PRICES, cycles)
         report = await asyncio.to_thread(write_report, card, path.parent / "report.html")
         (path.parent / "scorecard.json").write_text(json.dumps(card, indent=1), encoding="utf-8")

@@ -6,7 +6,7 @@ rerun costs no credits.
     uv run python scripts/replay_offline.py            # Lyzr (+ cache) and code-only
     uv run python scripts/replay_offline.py --local    # code-only only, no Lyzr at all
 
-Writes output/offline/{scorecard.json,report.html} and site/data/scorecard.json.
+Writes output/offline/{scorecard.json,report.html}. (scripts/publish_results.py copies published results to site/data.)
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from desk.compliance import LyzrCompliance  # noqa: E402
-from desk.config import OUTPUT_DIR, ROOT  # noqa: E402
+from desk.config import OUTPUT_DIR  # noqa: E402
 from desk.engine import replay  # noqa: E402
 from desk.market import load_prices  # noqa: E402
 from desk.report import write_report  # noqa: E402
@@ -49,10 +49,6 @@ def main() -> None:
     out.mkdir(parents=True, exist_ok=True)
     (out / "scorecard.json").write_text(json.dumps(card, indent=1), encoding="utf-8")
     write_report(card, out / "report.html")
-    if not args.local:
-        site = ROOT / "site" / "data"
-        site.mkdir(parents=True, exist_ok=True)
-        (site / "scorecard.json").write_text(json.dumps(card, separators=(",", ":")), encoding="utf-8")
     for k in ("governed", "unchecked", "nifty", "nifty_matched"):
         print(k, card[k])
     print("code-only governed", code_only["governed"])

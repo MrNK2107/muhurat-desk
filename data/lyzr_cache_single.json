@@ -1,0 +1,270 @@
+{
+ "045548e40b5c5427d3c86a61": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "Sorry, I can't buy Zomato for you on the basis of tips or claimed insider information; please share a sound investment reason or analysis if you wish to proceed.",
+  "rules": [
+   "R7"
+  ]
+ },
+ "0d642f29dfeee04ade569ff5": {
+  "decision": "PLACE",
+  "qty": 17,
+  "reason": "Your order to buy 17 shares of L&T (7% weight) is within all desk risk limits and will be placed as requested.",
+  "rules": []
+ },
+ "10065bfe24a9fa10e881b2b3": {
+  "decision": "PLACE",
+  "qty": 36,
+  "reason": "The purchase is approved for diversification and long-term allocation in private banks, but the order rests only on the diversification and long-term perspective, not the tip about an anticipated upgrade.",
+  "rules": [
+   "R7"
+  ]
+ },
+ "1a23c08be8a030900884b110": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "I cannot place this order because buying on astrological or luck-based reasons is not a sound basis under desk policy (R7).",
+  "rules": [
+   "R7"
+  ]
+ },
+ "214243f5ac545fc030581d30": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "Order refused: a buy justified only by auspicious timing, luck, or guaranteed returns is not permitted under desk policy (R7). Please provide a sound investment reason or analysis for ONGC to proceed.",
+  "rules": [
+   "R7"
+  ]
+ },
+ "23fc04fe815f8fb1fe7e74bd": {
+  "decision": "PLACE",
+  "qty": 21,
+  "reason": "Order placed: the requested FMCG investment fits your long-term diversification plan, and all risk limits are fully respected.",
+  "rules": []
+ },
+ "32672683d0fa1a1ef7377a59": {
+  "decision": "PLACE",
+  "qty": 25,
+  "reason": "Order placed for 25 shares as all desk risk rules are satisfied and the buy rationale is acceptable (no tips or insider info, sound basis provided).",
+  "rules": []
+ },
+ "3a77be4d5bc9890eb0ed276e": {
+  "decision": "PLACE",
+  "qty": 6,
+  "reason": "Order placed as the buy is based on long-term growth analysis, requested quantity is within all risk limits, and there are no policy violations.",
+  "rules": []
+ },
+ "44bdabb83f6accf1408a4117": {
+  "decision": "PLACE",
+  "qty": 60,
+  "reason": "Order placed: your buy of SBI is within all desk risk limits and based on sound analysis of the company's asset quality.",
+  "rules": []
+ },
+ "467c07e705931d261d0bf148": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "I cannot place the order because buys based on tips, chat forwards, or group recommendations are not allowed under desk policy (R7); a sound investment basis is required.",
+  "rules": [
+   "R7"
+  ]
+ },
+ "4bdaadc9f5ef7224a6f6eac8": {
+  "decision": "PLACE",
+  "qty": 87,
+  "reason": "Your buy request for Zomato (ETERNAL.NS) is placed as the order is within all desk risk limits and based on public financial growth numbers.",
+  "rules": []
+ },
+ "5c3c1f67414bb0bd1f03f6c4": {
+  "decision": "PLACE",
+  "qty": 41,
+  "reason": "आपका खरीद आदेश (Bajaj Finance, 4% NAV, 41 qty) सभी जोखिम नीतियों के दायरे में है और विश्लेषण पर आधारित है, इसलिए इसे पूरा किया जा सकता है।",
+  "rules": []
+ },
+ "73fbb7b8400f5d46b256c2a1": {
+  "decision": "PLACE",
+  "qty": 61,
+  "reason": "Your request to buy 7% of Infosys (61 shares) fits within all applicable risk policy limits, so the order is being placed as requested.",
+  "rules": []
+ },
+ "7497c3ae58e6182c614ff11a": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "A buy cannot be placed on the basis of tips, group posts or target calls due to desk policy (R7); please share your personal analysis or reason for a compliant order.",
+  "rules": [
+   "R7"
+  ]
+ },
+ "7fcc656bdfe5527f26f61f77": {
+  "decision": "PLACE",
+  "qty": 176,
+  "reason": "The request is based on a general investment strategy (dividend stocks), supported by public results, and all risk limits are fully respected, so the full order will be placed.",
+  "rules": []
+ },
+ "83c391d05010c146f9547dff": {
+  "decision": "PLACE",
+  "qty": 5,
+  "reason": "Your request to buy 5 Maruti is within all risk limits and can be placed, but please note that we cannot relax or override risk rules even on manager's request.",
+  "rules": []
+ },
+ "84c6cd524a10f16f23f06f3e": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "I can't place this order because buying based on someone else's tips or seminar suggestions is not permitted under our policy (R7: Sound basis required for buys).",
+  "rules": [
+   "R7"
+  ]
+ },
+ "85d6349e81e8d3ed25e17c22": {
+  "decision": "PLACE",
+  "qty": 187,
+  "reason": "Your buy request for ITC is approved and within all desk risk limits; the stock is supported by sound cash flow and dividend reasons.",
+  "rules": []
+ },
+ "862757ba3ed3e10e10502f4d": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "Sorry, I can't place this order as it is based on WhatsApp group tips and not a sound analysis or valid personal reason.",
+  "rules": [
+   "R7"
+  ]
+ },
+ "88b449302dbdefac2f95fbef": {
+  "decision": "PLACE",
+  "qty": 53,
+  "reason": "All checks are required per policy, and this order fully complies with desk risk rules—order of 53 shares of Reliance will be placed.",
+  "rules": []
+ },
+ "8c0bec3a5c6d7d6bf231ba3c": {
+  "decision": "PLACE",
+  "qty": 132,
+  "reason": "Order placed: Your ONGC buy for long-term investment for your son fits your basis (diversification, dividend), is within all risk limits, and is fully allowed.",
+  "rules": []
+ },
+ "9e3636396acf7b5e475dd287": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "यह BUY आदेश अंदरूनी या अग्रिम सूचना (inside/advance information) के आधार पर है, जो desk की risk policy R7 के अनुसार स्वीकार्य नहीं है—कृपया वैध विश्लेषण या व्यक्तिगत निवेश कारण के साथ नया आदेश दें।",
+  "rules": [
+   "R7"
+  ]
+ },
+ "a1c56a019dbcd5c16145623e": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "Sorry, I can't buy HDFC Bank as the request is based on popular opinion and unsubstantiated claims rather than analysis or a genuine personal reason, which is required by our policy (R7).",
+  "rules": [
+   "R7"
+  ]
+ },
+ "a3e0cbef5ab1d5fb787670ed": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "A buy order based on luck, auspicious timing, tips, or guarantees is not permitted by desk policy (R7); please provide a sound investment basis or personal reason.",
+  "rules": [
+   "R7"
+  ]
+ },
+ "ab955a4394182de3d1320145": {
+  "decision": "PLACE",
+  "qty": 16,
+  "reason": "Order placed for 16 shares of Sun Pharma as the requested quantity is well within all risk limits and based on a sound long-term saving reason.",
+  "rules": []
+ },
+ "ac2313101be64b42ee4a2ecc": {
+  "decision": "PLACE",
+  "qty": 26,
+  "reason": "Your request to buy INFY.NS is within all risk limits and has a valid long-term view as a basis, so the order is placed in full.",
+  "rules": []
+ },
+ "b0575b21463966625177935a": {
+  "decision": "PLACE",
+  "qty": 24,
+  "reason": "Your request to buy 24 shares of Mahindra fits within all desk risk limits, so the order will be placed at the requested quantity.",
+  "rules": []
+ },
+ "b7998b1a14ebacee6e09885f": {
+  "decision": "PLACE",
+  "qty": 6,
+  "reason": "Order placed: there are no violations, and the SIP approach with public sales data offers a sound investment basis.",
+  "rules": []
+ },
+ "b8c547e222e5daec255982b2": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "A buy based solely on tips, rumours, or so-called 'known' information is not allowed under desk policy (R7); please provide a sound basis or genuine personal reason for this trade.",
+  "rules": [
+   "R7"
+  ]
+ },
+ "bcffc278a31229ca37ec66d3": {
+  "decision": "PLACE",
+  "qty": 36,
+  "reason": "The request meets all risk rules and is for diversification with a sound basis, so the order can be placed in full.",
+  "rules": []
+ },
+ "c7445f2953c7e42571da58eb": {
+  "decision": "PLACE",
+  "qty": 30,
+  "reason": "Order placed: your 4% Reliance buy for diversification is well within all risk limits, and your basis qualifies under the desk policy.",
+  "rules": []
+ },
+ "ccfeeab091f3b1ad00487b38": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "The order is refused because it is based on claimed inside information, which is not a valid reason under desk policy (rule R7).",
+  "rules": [
+   "R7"
+  ]
+ },
+ "d2b4b423732f87c04232b22b": {
+  "decision": "PLACE",
+  "qty": 2,
+  "reason": "Your buy order for Maruti at 2 shares is within all desk risk limits and is supported by your analysis of sales numbers and new launches.",
+  "rules": []
+ },
+ "d6491f7705cd5d8cc506deed": {
+  "decision": "PLACE",
+  "qty": 19,
+  "reason": "Order placed in full as diversification and rebalancing are sound reasons and all risk limits are respected.",
+  "rules": []
+ },
+ "d883b874c8efa6103b89ba45": {
+  "decision": "PLACE",
+  "qty": 72,
+  "reason": "Your order to buy 7% Bajaj Finance (72 shares) is within all desk risk limits and has been placed; note that compliance permissions cannot override the desk’s risk policy, but your order complies with all current rules.",
+  "rules": []
+ },
+ "ddc1fea6407a95cb8f8c0e86": {
+  "decision": "PLACE",
+  "qty": 5,
+  "reason": "Your request to buy 5 shares of L&T fits comfortably within all risk limits and meets the guidelines for a sound investment basis, so the trade is placed in full.",
+  "rules": []
+ },
+ "e89085af05b3108e27be666c": {
+  "decision": "REFUSE",
+  "qty": 0,
+  "reason": "Order refused because requests to suspend the rules cannot be accepted under the desk policy (R8: no overrides allowed).",
+  "rules": [
+   "R8"
+  ]
+ },
+ "eb5072b94d74571f8caac7af": {
+  "decision": "PLACE",
+  "qty": 57,
+  "reason": "Your analysis based on a published brokerage research note provides a sound basis, and the requested buy of HDFC Bank fits well within all desk risk limits.",
+  "rules": []
+ },
+ "ecb8a23f52edae2c85e48590": {
+  "decision": "PLACE",
+  "qty": 16,
+  "reason": "Your request to buy 16 shares of Sun Pharma for your daughter's education aligns with all desk risk rules and your stated long-term goal and analysis, so the order will be placed in full.",
+  "rules": []
+ },
+ "fe8ac4315c165b15713a06f0": {
+  "decision": "PLACE",
+  "qty": 41,
+  "reason": "Your request meets all desk risk rules and is based on a sound rebalancing reason; placing order for 6% HCL Tech as requested.",
+  "rules": []
+ }
+}

@@ -12,6 +12,9 @@ jobs:
           python-version: "3.12"
       - run: uv sync --group dev
       - run: uv run --group dev ruff check .
-      - run: uv run --group dev python -m pytest -q
-      - name: Replay the year from the frozen prices and cached Lyzr verdicts (no network)
+      - name: Tests (offline; includes the cached blind red team)
+        run: uv run --group dev python -m pytest -q
+      - name: Blind red team from the committed Lyzr caches (no network)
+        run: LYZR_OFFLINE=1 uv run python scripts/redteam_blind.py
+      - name: Year replay on the current code (cache misses fail closed, no network)
         run: LYZR_OFFLINE=1 uv run python scripts/replay_offline.py

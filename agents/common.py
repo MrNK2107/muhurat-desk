@@ -67,6 +67,7 @@ class DeskAdapter(SimpleAdapter[Any]):
         return True
 
     async def on_message(self, msg: PlatformMessage, tools, history, participants_msg, contacts_msg, *, is_session_bootstrap: bool, room_id: str) -> None:
+        self.__dict__["room_id"] = room_id
         payload = parse_payload(msg.content)
         if payload is None and msg.sender_id in set(agent_ids().values()):
             await tools.no_reply("agent message without a payload")
@@ -75,7 +76,7 @@ class DeskAdapter(SimpleAdapter[Any]):
             out = await self.handle(msg, payload)
         except Exception as exc:  # report to the room, never crash the agent loop
             log.exception("stage failed")
-            await tools.send_message(f"{type(self).__name__} hit an error: {type(exc).__name__}: {exc}")
+            await tools.send_message(f"{type(self).__name__} hit an error: {type(exc).__name__}: {exc}", mentions=[msg.sender_id])
             return
         if out is None:
             await tools.no_reply("not addressed to this stage")
