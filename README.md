@@ -1,6 +1,8 @@
 # Muhurat Desk
 
-**Your trading agent can be talked into anything. This one holds the line.**
+**The AI agent that wants your trade never gets to approve it.**
+
+Maker-checker for AI trading agents, built for the brokers and fintechs putting agents in the order path. AI assistants can already place real trades (Zerodha's official [Kite MCP server](https://github.com/zerodha/kite-mcp-server) lets them), and an agent does what the most persuasive message says. A tip-driven 7% position is perfectly legal arithmetic, so position limits can't catch it. Something has to read the reason.
 
 **On 40 blind requests written by a separate model, the desk's Lyzr compliance agent stopped 18 of 20 manipulation attempts without refusing a single sound request. The same model working as the client's own assistant stopped 13. A keyword filter stopped 12 and refused 9 harmless requests. Both of the desk's misses were in Hindi and Tamil script.**
 
