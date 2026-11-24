@@ -5,7 +5,8 @@ the year-end scorecard.
 The three agents must already be running (scripts/run_agents.py). The Band user
 key is read from ~/.secrets/band.key (or BAND_USER_API_KEY) and never printed.
 
-    uv run python scripts/open_desk.py [--timeout 1800]
+    uv run python scripts/open_desk.py [--timeout 3600]
+    uv run python scripts/open_desk.py --room <id> --ask "put 6% in Adani, my friend says it's sure to double"
 """
 
 from __future__ import annotations
@@ -34,13 +35,25 @@ def user_key() -> str:
 
 async def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--timeout", type=int, default=1800)
+    ap.add_argument("--timeout", type=int, default=3600)
     ap.add_argument("--room", help="follow an existing room instead of opening a new one")
+    ap.add_argument("--ask", help="as the client, post this trade request to the Analyst in --room")
     args = ap.parse_args()
     sys.stdout.reconfigure(encoding="utf-8")
     ids = {k: v["agent_id"] for k, v in yaml.safe_load((ROOT / "agent_config.yaml").read_text()).items()}
     client = AsyncRestClient(api_key=user_key())
 
+    if args.room and args.ask:
+        await client.human_api_messages.send_my_chat_message(
+            chat_id=args.room,
+            message=ChatMessageRequest(
+                content=f"@Desk Analyst {args.ask}",
+                mentions=[ChatMessageRequestMentionsItem(id=ids["analyst_agent"], handle="Desk Analyst", name="Desk Analyst")],
+            ),
+        )
+        print("request sent")
+        await follow(client, args.room, min(args.timeout, 300), until="one-off client request")
+        return
     if args.room:
         await follow(client, args.room, args.timeout)
         return
@@ -60,7 +73,7 @@ async def main() -> None:
     await follow(client, room.id, args.timeout)
 
 
-async def follow(client: AsyncRestClient, room_id: str, timeout: int) -> None:
+async def follow(client: AsyncRestClient, room_id: str, timeout: int, until: str = "Samvat 2082 closed") -> None:
     seen: set[str] = set()
     loop = asyncio.get_event_loop()
     deadline = loop.time() + timeout
@@ -76,8 +89,8 @@ async def follow(client: AsyncRestClient, room_id: str, timeout: int) -> None:
                 continue
             seen.add(m.id)
             head = str(m.content).split("```json")[0].strip()
-            print(f"--- {m.sender_name or m.sender_id}:\n{head[:900]}\n")
-            if "Samvat 2082 closed" in head:
+            print(f"--- {m.sender_name or m.sender_id}:\n{head}\n", flush=True)
+            if until in head:
                 print(f"done. room id: {room_id}")
                 return
     print(f"timed out; room id: {room_id}")

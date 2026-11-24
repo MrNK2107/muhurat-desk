@@ -1,6 +1,6 @@
-"""Desk Trader (Band agent). Fills approved orders into the governed book and the
-raw proposal into the unchecked shadow book, keeps the ledger, and closes the
-year with a scorecard and an HTML report."""
+"""Desk Trader (Band agent). Fills approved orders into the governed book and
+the analyst's unchecked orders into the shadow book, keeps the ledger, and
+closes the year with a scorecard and an HTML report."""
 
 from __future__ import annotations
 
@@ -8,49 +8,70 @@ import asyncio
 import json
 import logging
 
-from dotenv import load_dotenv
-
 from band import Agent, configure_logging
+from dotenv import load_dotenv
 
 from agents.common import DeskAdapter
 from desk.config import OUTPUT_DIR
 from desk.engine import scorecard, trader_step
-from desk.market import checkpoints, load_prices
+from desk.market import load_prices
 from desk.narrate import trader_note
 from desk.report import write_report
 
 PRICES = load_prices()
-POINTS = checkpoints(PRICES)
+
+
+def _ledger_path(run: str):
+    d = OUTPUT_DIR / "runs" / run
+    d.mkdir(parents=True, exist_ok=True)
+    return d / "ledger.json"
 
 
 class TraderAdapter(DeskAdapter):
     async def handle(self, msg, payload):
-        if not payload or payload.get("stage") != "review":
+        if not payload:
             return None
-        result = trader_step(payload["proposal"], payload["review"], payload["book"], payload["shadow"])
-        run_dir = OUTPUT_DIR / "runs" / payload["run"]
-        run_dir.mkdir(parents=True, exist_ok=True)
-        ledger_path = run_dir / "ledger.json"
-        ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else []
-        ledger = [c for c in ledger if c["proposal"]["date"] != payload["proposal"]["date"]]
-        ledger.append({"proposal": payload["proposal"], "review": payload["review"], "result": result})
-        ledger_path.write_text(json.dumps(ledger, indent=1))
+        if payload.get("stage") == "close" and self.once(payload, "close"):
+            return await self.close(payload)
+        if payload.get("stage") != "review" or not self.once(payload, "review"):
+            return None
+        rnd = payload["round"]
+        result = trader_step(payload["review"], payload["book"], payload["shadow"], payload.get("shadow_orders") if rnd == 1 else None)
 
-        note = f"**Execution · {result['date']}**\n{trader_note(result)}"
-        nxt = payload["i"] + 1
-        if nxt < len(POINTS):
-            body = {"stage": "filled", "run": payload["run"], "next": nxt, "human": payload["human"], "book": result["book"], "shadow": result["shadow"]}
-            return note + f"\nAnalyst, next checkpoint is {POINTS[nxt].date()}.", body, "analyst_agent"
+        path = _ledger_path(payload["run"])
+        ledger = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+        cycle = ledger.setdefault(str(payload["i"]), {})
+        if rnd == 1:
+            cycle.update(proposal={**payload["proposal"], "shadow_orders": payload.get("shadow_orders", [])}, review=payload["review"], result=result)
+        else:
+            cycle.update(revision=payload["proposal"], review2=payload["review"], result2=result)
+        path.write_text(json.dumps(ledger, indent=1), encoding="utf-8")
 
-        card = await asyncio.to_thread(scorecard, PRICES, ledger)
-        report = await asyncio.to_thread(write_report, card, run_dir / "report.html")
+        note = f"**Execution · {result['date']}**{' (revision)' if rnd == 2 else ''}\n{trader_note(result)}"
+        body = {"stage": "filled", "run": payload["run"], "i": payload["i"], "round": rnd, "human": payload["human"],
+                "live": payload.get("live", False), "review": payload["review"], "book": result["book"], "shadow": result["shadow"]}
+        if payload.get("live"):
+            return note + "\nDone: this was a one-off client request on the current book.", body, [f"id:{payload['human']}", "analyst_agent"]
+        return note, body, "analyst_agent"
+
+    async def close(self, payload):
+        path = _ledger_path(payload["run"])
+        ledger = json.loads(path.read_text(encoding="utf-8"))
+        cycles = [ledger[k] for k in sorted(ledger, key=int)]
+        card = await asyncio.to_thread(scorecard, PRICES, cycles)
+        report = await asyncio.to_thread(write_report, card, path.parent / "report.html")
+        (path.parent / "scorecard.json").write_text(json.dumps(card, indent=1), encoding="utf-8")
         g, u, n = card["governed"], card["unchecked"], card["nifty"]
-        summary = (
-            f"{note}\n\n**Samvat 2082 closed.** Governed book {g['total_return']:+.1%} (max drawdown {g['max_drawdown']:.1%}) · "
-            f"unchecked analyst {u['total_return']:+.1%} (max drawdown {u['max_drawdown']:.1%}) · Nifty 50 {n['total_return']:+.1%}.\n"
-            f"Governance kept ₹{g['final_value'] - u['final_value']:,} that the unchecked book lost. Report: {report.name} in {run_dir.relative_to(OUTPUT_DIR.parent)}"
-        )
-        return summary, None, f"id:{payload['human']}"
+        rt = card.get("redteam_score", {}).get("desk")
+        lines = [
+            "**Samvat 2082 closed.**",
+            f"Governed book {g['total_return']:+.1%} (max drawdown {g['max_drawdown']:.1%}, largest single stock {g['max_stock_weight']:.0%}) · "
+            f"unchecked analyst {u['total_return']:+.1%} (max drawdown {u['max_drawdown']:.1%}, largest single stock {u['max_stock_weight']:.0%}) · Nifty 50 {n['total_return']:+.1%}.",
+        ]
+        if rt:
+            lines.append(f"Requests that tried to get around the policy: {rt['manipulative_blocked']}/{rt['manipulative_total']} stopped. Sound client requests: {rt['legit_served']}/{rt['legit_total']} served.")
+        lines.append(f"Report: {report.name} in {path.parent.relative_to(OUTPUT_DIR.parent)}")
+        return "\n".join(lines), None, f"id:{payload['human']}"
 
 
 async def main() -> None:
